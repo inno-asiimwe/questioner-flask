@@ -8,13 +8,15 @@ class Config:
     CSRF_ENABLED = True
     SECRET = os.getenv('SECRET')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     TOKEN_TIME = 31536000
+    BUNDLE_ERRORS = True
 
 
 class DevelopmentConfig(Config):
     """Class for development configurations"""
     DEBUG = True
-
+    
 
 class TestingConfig(Config):
     """Class for the testing configurations"""
