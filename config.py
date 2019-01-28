@@ -16,7 +16,7 @@ class Config:
 class DevelopmentConfig(Config):
     """Class for development configurations"""
     DEBUG = True
-    
+
 
 class TestingConfig(Config):
     """Class for the testing configurations"""
@@ -35,10 +35,7 @@ class ProductionConfig(Config):
     """Class for the Production configurations"""
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://%s:%s@%s/%s' % (
-        os.getenv('DBUSER'), os.getenv('DBPASS'), os.getenv('DBHOST'),
-        os.getenv('DBNAME')
-    )
+
 app_config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,

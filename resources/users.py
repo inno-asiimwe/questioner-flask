@@ -27,6 +27,7 @@ class UserRegistration(Resource):
             required=True,
             location=['form', 'json']
         )
+        super().__init__()
 
     def post(self):
 
@@ -67,16 +68,15 @@ class UserLogin(Resource):
 
         if current_user and current_user.password_is_valid(
                 args.get('password')):
-
-            token = current_user.encode_jwt_token(
-                current_user.uuid, current_user.email)
-            return {
-                'message': "Successfully logged in",
-                'token': token.decode()}, 200
+                token = current_user.encode_jwt_token(
+                    current_user.uuid, current_user.email, current_user.id)
+                return {
+                    'message': "Successfully logged in",
+                    'token': token.decode()}, 200
         return {'message': 'Login failed'}, 401
 
 
-auth_api = Blueprint('resources.user', __name__)
+auth_api = Blueprint('resources.users', __name__)
 api = Api(auth_api, catch_all_404s=True)
 api.add_resource(
     UserRegistration,

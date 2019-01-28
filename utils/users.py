@@ -19,9 +19,9 @@ def auth_required(func):
             auth_token = ''
         else:
             auth_token = auth_header.split(" ")[1]
-            subject = User.decode_auth_token(auth_token)
-        if not auth_token or isinstance(resp, str):
-            return make_response(jsonify(response)), code
+            subject = User.decode_jwt_token(auth_token)
+        if not auth_token or isinstance(subject, str):
+            return response, code
         user = {'user_info': subject, 'auth_token': auth_token}
         return func(user, *args, **kwargs)
     return decorated_function

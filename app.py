@@ -2,8 +2,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import app_config
 
-
-
 db = SQLAlchemy()
 
 
@@ -18,7 +16,9 @@ def create_app(config_name):
 
     # register blueprints
     from resources.users import auth_api
-    
+    from resources.meetups import meetup_api
+
     app.register_blueprint(auth_api, url_prefix='/api/v1/users')
+    app.register_blueprint(meetup_api, url_prefix='/api/v1/meetups')
 
     return app

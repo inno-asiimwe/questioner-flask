@@ -12,6 +12,10 @@ class User(db.Model):
     uuid = db.Column(db.String(256), default=str(uuid.uuid4()))
     email = db.Column(db.String(256), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
+    meetups = db.relationship(
+        'Meetup',
+        backref='Meetup',
+        cascade='all, delete-orphan')
 
     def __init__(self, email, password):
         self.email = email
@@ -29,7 +33,11 @@ class User(db.Model):
     def find_user_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
 
-    def encode_jwt_token(self, uuid, email):
+    @classmethod
+    def find_user_by_uuid(cls, uuid):
+        return cls.query.filter_by(uuid=uuid).first()
+
+    def encode_jwt_token(self, uuid, email, id):
         try:
             payload = {
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(
@@ -38,7 +46,8 @@ class User(db.Model):
                 'sub': {
                     'userInfo': {
                         'uuid': uuid,
-                        'email': email
+                        'email': email,
+                        'id': id
                     }
                 }
             }
